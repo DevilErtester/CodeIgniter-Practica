@@ -4,7 +4,7 @@
         <title></title>  
     </head>  
     <body>  
-        <h1>Welcome, You are successfully logged in.</h1>  
+        <h1>Welcome, You are successfully logged in. ALUMNES</h1>  
       
         <?php  
         echo "<pre>";  

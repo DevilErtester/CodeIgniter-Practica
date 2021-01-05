@@ -10,13 +10,12 @@ class Login_model extends CI_Model {
   
         if ($query->num_rows() == 1)  
         {  
-            return true;  
+            $row = $query->row(); 
+            $_POST['rol'] = $row->rol;
+            return true;
         } else {  
             return false;  
         }  
-  
-    }  
-  
-      
+    }    
 }  
-?> 
+?>

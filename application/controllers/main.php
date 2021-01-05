@@ -22,7 +22,12 @@
         {  
             if ($this->session->userdata('currently_logged_in'))   
             {  
-                $this->load->view('data');  
+                if($this->session->userdata('rol')==1){
+                    $this->load->view('users');  
+                } else if($this->session->userdata('rol')==2){
+                    $this->load->view('prof');  
+                }  
+                
             } else {  
                 redirect('Main/invalid');  
             }  
@@ -32,29 +37,32 @@
         {  
             $this->load->view('invalid');  
         }  
-      
+        // accion para iniciar session en la pagina vez una vez el usuario es valido
         public function login_action()  
         {  
             $this->load->helper('security');  
             $this->load->library('form_validation');  
-      
-            $this->form_validation->set_rules('username', 'Username:', 'required|trim|xss_clean|callback_validation');  
+          
+            $this->form_validation->set_rules('username', 'Username:', 'required|trim|callback_validation');  
             $this->form_validation->set_rules('password', 'Password:', 'required|trim');  
       
             if ($this->form_validation->run())   
             {  
+               
                 $data = array(  
-                    'username' => $this->input->post('username'),  
+                    
+                    'username' => $this->input->post('username'),
+                    'rol' => $this->input->post('rol'),  
                     'currently_logged_in' => 1  
                     );    
-                        $this->session->set_userdata($data);  
+                    $this->session->set_userdata($data);  
                     redirect('Main/data');  
             }   
             else {  
                 $this->load->view('login_view');  
             }  
         }  
-      
+        // Validacion del formulario para crear nuevos users
         public function signin_validation()  
         {  
             $this->load->library('form_validation');  
@@ -76,15 +84,15 @@
                 $this->load->view('signin');  
             }  
         }  
-      
+      //    validamos que el usuario y la pass existan 
+      //    y devolvemos el rol para asi acceder a la debida pagina
         public function validation()  
         {  
             $this->load->model('login_model');  
       
             if ($this->login_model->log_in_correctly())  
             {  
-      
-                return true;  
+                return true;
             } else {  
                 $this->form_validation->set_message('validation', 'Incorrect username/password.');  
                 return false;  

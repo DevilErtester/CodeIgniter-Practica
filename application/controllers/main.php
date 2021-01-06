@@ -33,7 +33,7 @@
                 }   
                 
             } else {  
-                redirect('Main/invalid');  
+                redirect('Main/invalid');
             }  
         }  
       

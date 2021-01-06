@@ -23,10 +23,14 @@
             if ($this->session->userdata('currently_logged_in'))   
             {  
                 if($this->session->userdata('rol')==1){
-                    $this->load->view('users');  
-                } else if($this->session->userdata('rol')==2){
+                    $this->load->view('users');
+                } 
+                else if($this->session->userdata('rol')==2){
                     $this->load->view('prof');  
-                }  
+                } 
+                else if($this->session->userdata('rol')==0){
+                    redirect('Admin/dashboard_controller');
+                }   
                 
             } else {  
                 redirect('Main/invalid');  

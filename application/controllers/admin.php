@@ -1,44 +1,46 @@
-<?php  
-    defined('BASEPATH') OR exit('No direct script access allowed');  
-      
-    class Admin extends CI_Controller {
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
 
-        public function dashboard_controller()  
-        {  
-            if ($this->session->userdata('rol')==0)   
-            {   
-                $this->load->view('dashboard_admin');  
-                redirect('Admin/printAlumnes');  
-            }
-            else{
-                redirect('Admin/invalid');  
-            }
+class Admin extends CI_Controller
+{
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('form');
+        $this->load->helper('url');
+    }
+    public function dashboard_controller()
+    {
+        if ($this->session->userdata('rol') == 0) {
+            $this->load->view('dashboard_admin');
+            redirect('Admin/printAlumnes');
+        } else {
+            redirect('Admin/invalid');
         }
-        public function index()  
-        {  
-            $this->printAlumnes();  
-        }   
-        public function invalid()  
-        {  
-            $this->load->view('invalid');  
-        } 
-        public function printAlumnes()  
-        {  
-            $this->load->model('admin_model');
-            
-            // load table library
-            $this->load->library('table');
-             // set table template
-            $style = array('table_open'  => '<table class="table table-bordered table-hover">');
-            $this->table->set_template($style);
-            // set table heading
-            $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT', 'TutorId','Cicle Impartit');
+    }
+    public function index()
+    {
+        $this->printAlumnes();
+    }
+    public function invalid()
+    {
+        $this->load->view('invalid');
+    }
+    public function printAlumnes()
+    {
+        $this->load->model('admin_model');
 
-            $alumnes=$this->admin_model->getAllAlumnes();
-            
-            $data['alumnes'] = $this->table->generate($alumnes);
-            $this->load->view('dashboard_admin',$data);
-        } 
-        
-    }  
-    ?>  
+        // load table library
+        $this->load->library('table');
+        // set table template
+        $style = array('table_open'  => '<table class="table table-bordered table-hover">');
+        $this->table->set_template($style);
+        // set table heading
+        $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT', 'TutorId', 'Cicle Impartit');
+
+        $alumnes = $this->admin_model->getAllAlumnes();
+
+        $data['alumnes'] = $this->table->generate($alumnes);
+        $this->load->view('dashboard_admin', $data);
+    }
+}

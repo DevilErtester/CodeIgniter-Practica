@@ -11,7 +11,8 @@ class Admin extends CI_Controller
     }
     public function dashboard_controller()
     {
-        if ($this->session->userdata('rol') == 0) {
+        if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 0) {
+
             $this->load->view('dashboard_admin');
             redirect('Admin/printAlumnes');
         } else {
@@ -20,6 +21,7 @@ class Admin extends CI_Controller
     }
     public function index()
     {
+        $this->dashboard_controller();
         $this->printAlumnes();
     }
     public function invalid()

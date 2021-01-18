@@ -49,7 +49,7 @@ class Main extends CI_Controller
         $this->load->helper('security');
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('username', 'Username:', 'required|trim|callback_validation');
+        $this->form_validation->set_rules('username', 'Username:', 'required|trim|xss_clean|callback_validation');
         $this->form_validation->set_rules('password', 'Password:', 'required|trim');
 
         if ($this->form_validation->run()) {
@@ -71,7 +71,7 @@ class Main extends CI_Controller
     {
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('username', 'Username', 'trim|xss_clean|is_unique[signup.username]');
+        $this->form_validation->set_rules('username', 'Username', 'trim|is_unique[signup.username]');
 
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
 

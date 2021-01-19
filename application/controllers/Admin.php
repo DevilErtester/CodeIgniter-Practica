@@ -45,4 +45,37 @@ class Admin extends CI_Controller
         $data['alumnes'] = $this->table->generate($alumnes);
         $this->load->view('dashboard_admin', $data);
     }
+    private function random_password()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
+        $password = array();
+        $alpha_length = strlen($alphabet) - 1;
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alpha_length);
+            $password[] = $alphabet[$n];
+        }
+        return implode($password);
+    }
+    public function newTutor($tutor)
+    {
+        $this->load->model('Tutors_model');
+        $this->load->model('User_model');
+
+        $user = array(
+            'mail' => $tutor['mail'],
+            'pass' => $this->random_password(),
+            'nom' => $tutor['nom'],
+            'rol' => '2'
+        );
+
+        $this->User_model->newUser($user);
+        $idTutor = $this->User_model->getIdUser($tutor['mail']);
+
+        $newTutor = array(
+            'idTutor' => $idTutor,
+            'cicle_impar' => $tutor['cicle_impar']
+        );
+
+        $this->Tutors_model->newTutor($newTutor);
+    }
 }

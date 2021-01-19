@@ -9,6 +9,8 @@ class Admin extends CI_Controller
         $this->load->helper('form');
         $this->load->helper('url');
     }
+
+
     public function dashboard_controller()
     {
         if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 0) {
@@ -24,10 +26,14 @@ class Admin extends CI_Controller
         $this->dashboard_controller();
         $this->printAlumnes();
     }
+
+
     public function invalid()
     {
         $this->load->view('invalid');
     }
+
+
     public function printAlumnes()
     {
         $this->load->model('admin_model');
@@ -45,6 +51,8 @@ class Admin extends CI_Controller
         $data['alumnes'] = $this->table->generate($alumnes);
         $this->load->view('dashboard_admin', $data);
     }
+
+
     private function random_password()
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
@@ -56,6 +64,8 @@ class Admin extends CI_Controller
         }
         return implode($password);
     }
+
+
     public function newTutor($tutor)
     {
         $this->load->model('Tutors_model');

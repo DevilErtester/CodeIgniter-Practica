@@ -8,11 +8,13 @@ class User_model extends CI_Model
     }
     public function getIdUser($mail)
     {
-        $this->db->select('userid');
-        $this->db->from('users');
-        $this->db->where('mail', $mail);
+        $query = $this->db->query('SELECT userid FROM users WHERE mail="'.$mail.'";');
 
-        $query = $this->db->get();
-        return $query;
+        $row = $query->row_array();
+
+        if (isset($row))
+        {
+                return $row['userid'];
+        }
     }
 }

@@ -13,6 +13,7 @@
         echo print_r($this->session->all_userdata());  
         echo "</pre>";
         echo $alumnes;
+        
         ?>  
     
       

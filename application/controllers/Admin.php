@@ -74,8 +74,11 @@ class Admin extends CI_Controller
 
             $this->form_validation->set_rules('mail', 'Email:', 'required|trim|xss_clean');
             $this->form_validation->set_rules('nom', 'Nom:', 'required|trim|xss_clean');
-            $this->form_validation->set_rules('cic_impar', 'Cicle impartit:', 'required|trim|xss_clean');
-
+            $this->form_validation->set_rules(
+                'cic_impar',
+                'Cicle impartit:',
+                'required|trim|xss_clean'
+            );
             // load table library
             $this->load->library('table');
             // set table template
@@ -87,19 +90,22 @@ class Admin extends CI_Controller
             $tutors = $this->Tutors_model->getAllTutors();
 
             $data['tutors'] = $this->table->generate($tutors);
+
             $this->load->view('tutorsList', $data);
             if (isset($_POST['btnSubmit'])) {
-                if ($this->form_validation->run()) {
-                    $tutor = array(
-                        'mail' => $this->input->post('mail'),
-                        'nom' => $this->input->post('nom'),
-                        'cicle_impar' => $this->input->post('cic_impar'),
-                    );
-                    $this->newTutor($tutor);
-                } else {
-                    $this->form_validation->set_message('validation', 'Incorrect username/password.');
-                }
+                $this->newtutor_action();
             }
+        }
+    }
+    public function newtutor_action()
+    {
+        if ($this->form_validation->run()) {
+            $tutor = array(
+                'mail' => $this->input->post('mail'),
+                'nom' => $this->input->post('nom'),
+                'cicle_impar' => $this->input->post('cic_impar'),
+            );
+            $this->newTutor($tutor);
         }
     }
 

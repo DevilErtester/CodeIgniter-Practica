@@ -9,7 +9,8 @@ class Admin extends CI_Controller
         $this->load->helper('form');
         $this->load->helper('url');
     }
-    public function is_logged(){
+    public function is_logged()
+    {
         if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 0) {
             return true;
         } else {
@@ -31,7 +32,6 @@ class Admin extends CI_Controller
     {
         $this->dashboard_controller();
         $this->printAlumnes();
-        
     }
 
 
@@ -43,10 +43,9 @@ class Admin extends CI_Controller
 
     public function printAlumnes()
     {
-        if(!$this->is_logged()){
+        if (!$this->is_logged()) {
             $this->invalid();
-            
-        }else{
+        } else {
             $this->load->model('admin_model');
 
             // load table library
@@ -61,16 +60,14 @@ class Admin extends CI_Controller
 
             $data['alumnes'] = $this->table->generate($alumnes);
             $this->load->view('dashboard_admin', $data);
-            
         }
     }
-    
+
     public function printTutores()
     {
-        if(!$this->is_logged()){
+        if (!$this->is_logged()) {
             $this->invalid();
-            
-        }else{
+        } else {
             $this->load->model('Tutors_model');
 
             // load table library
@@ -86,13 +83,12 @@ class Admin extends CI_Controller
             $data['tutors'] = $this->table->generate($tutors);
             $this->load->view('tutorsList', $data);
             if (isset($_POST['btnSubmit'])) {
-                $tutor = array (
-                    'mail' => $this->input->post ('mail'),
-                    'nom' => $this->input->post ('nom'),
-                    'cicle_impar' => $this->input->post ('cic_impar'),
+                $tutor = array(
+                    'mail' => $this->input->post('mail'),
+                    'nom' => $this->input->post('nom'),
+                    'cicle_impar' => $this->input->post('cic_impar'),
                 );
                 $this->newTutor($tutor);
-                
             }
         }
     }
@@ -106,37 +102,36 @@ class Admin extends CI_Controller
             $n = rand(0, $alpha_length);
             $password[] = $alphabet[$n];
         }
-        return implode("",$password);
+        return implode("", $password);
     }
-    
+
 
     public function newTutor($tutor)
     {
-        if(!$this->is_logged()){
+        if (!$this->is_logged()) {
             $this->invalid();
-            
-        }else{
-        $this->load->model('Tutors_model');
-        $this->load->model('User_model');
+        } else {
+            $this->load->model('Tutors_model');
+            $this->load->model('User_model');
 
-        $user = array(
-            'mail' => $tutor['mail'],
-            'pass' => $this->random_password(),
-            'nom' => $tutor['nom'],
-            'rol' => '2'
-        );
+            $user = array(
+                'mail' => $tutor['mail'],
+                'pass' => $this->random_password(),
+                'nom' => $tutor['nom'],
+                'rol' => '2'
+            );
 
-        $this->User_model->newUser($user);
-        $idTutor = $this->User_model->getIdUser($tutor['mail']);
+            $this->User_model->newUser($user);
+            $idTutor = $this->User_model->getIdUser($tutor['mail']);
 
-        $newTutor = array(
-            'idTutor' => $idTutor,
-            'cicle_impar' => $tutor['cicle_impar']
-        );
+            $newTutor = array(
+                'idTutor' => $idTutor,
+                'cicle_impar' => $tutor['cicle_impar']
+            );
 
-        $this->Tutors_model->newTutor($newTutor);
-        redirect('/Admin/printTutores');
-    }
+            $this->Tutors_model->newTutor($newTutor);
+            redirect('/Admin/printTutores');
+        }
     }
     //new tutor testing model
     // -------------------------------------------------
@@ -154,7 +149,7 @@ class Admin extends CI_Controller
 
     //     $this->User_model->newUser($user);
     //     $idTutor = $this->User_model->getIdUser('test2');
-       
+
     //     $newTutor = array(
     //         'idTutor' => $idTutor,
     //         'cicle_impar' => 'test'

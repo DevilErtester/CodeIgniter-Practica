@@ -9,15 +9,12 @@
         <h1>Welcome, You are successfully logged in. ADMIN</h1>  
       
         <?php  
-        echo "<pre>";  
-        echo print_r($this->session->all_userdata());  
-        echo "</pre>";
         echo $alumnes;
-        
+  
         ?>  
-    
-      
-        <a href='<?php echo base_url()."index.php/Main/logout"; ?>'>Logout</a>  
+        
+        <a href='<?php echo base_url()."index.php/Admin/printTutores"; ?>'>Tutores</a>
+        <a href='<?php echo base_url()."index.php/Admin/logout"; ?>'>Logout</a>  
       
     </body>  
     </html>  

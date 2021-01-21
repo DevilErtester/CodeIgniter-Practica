@@ -31,6 +31,7 @@ class Admin extends CI_Controller
     {
         $this->dashboard_controller();
         $this->printAlumnes();
+        
     }
 
 
@@ -60,9 +61,41 @@ class Admin extends CI_Controller
 
             $data['alumnes'] = $this->table->generate($alumnes);
             $this->load->view('dashboard_admin', $data);
+            
         }
     }
+    
+    public function printTutores()
+    {
+        if(!$this->is_logged()){
+            $this->invalid();
+            
+        }else{
+            $this->load->model('Tutors_model');
 
+            // load table library
+            $this->load->library('table');
+            // set table template
+            $style = array('table_open'  => '<table class=" w5 table table-bordered table-hover">');
+            $this->table->set_template($style);
+            // set table heading
+            $this->table->set_heading('idTutor', 'Cicle impartit');
+
+            $tutors = $this->Tutors_model->getAllTutors();
+
+            $data['tutors'] = $this->table->generate($tutors);
+            $this->load->view('tutorsList', $data);
+            if (isset($_POST['btnSubmit'])) {
+                $data = array (
+                    'mail' => $this->input->post ('mail'),
+                    'nom' => $this->input->post ('nom'),
+                    'cicle_impar' => $this->input->post ('cic_impar'),
+                );
+                $this->newTutor($data);
+                
+            }
+        }
+    }
 
     private function random_password()
     {
@@ -75,29 +108,7 @@ class Admin extends CI_Controller
         }
         return implode("",$password);
     }
-    public function newTutorForm()
-    {
-        if(!$this->is_logged()){
-            $this->invalid();
-            
-        }else{
-            echo form_open('Admin/newTutorForm');  
-            echo validation_errors();  
-        
-            echo form_label('Email', 'mail');
-            echo form_input(['name' => 'mail']);
-
-            echo form_label('Nom', 'name');
-            echo form_input(['name' => 'nom']);
-
-            echo form_label('Cicle impartit', 'cic_impar');
-            echo form_input(['name' => 'cic_impar']);
-            
-            echo form_submit('btnSubmit', 'Create new tutor');
-            
-            echo form_close();
-        }
-    }
+    
 
     public function newTutor($tutor)
     {
@@ -124,6 +135,7 @@ class Admin extends CI_Controller
         );
 
         $this->Tutors_model->newTutor($newTutor);
+        redirect('/Admin/printTutores');
     }
     }
     //new tutor testing model

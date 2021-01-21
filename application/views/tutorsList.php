@@ -31,8 +31,8 @@
     echo $formTut;
     ?>
 
-    <a href='<?php echo base_url() . "index.php/Admin/printAlumnes"; ?>'>PrintAlumnes</a>
-    <a href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
+    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Admin/printAlumnes"; ?>'>PrintAlumnes</a>
+    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
 
 </body>
 

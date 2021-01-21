@@ -30,7 +30,7 @@ class Main extends CI_Controller
             if ($this->session->userdata('rol') == 1) {
                 $this->load->view('users');
             } else if ($this->session->userdata('rol') == 2) {
-                $this->load->view('prof');
+                redirect('Prof/dashboard_controller');
             } else if ($this->session->userdata('rol') == 0) {
                 redirect('Admin/dashboard_controller');
             }

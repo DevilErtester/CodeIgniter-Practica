@@ -86,12 +86,12 @@ class Admin extends CI_Controller
             $data['tutors'] = $this->table->generate($tutors);
             $this->load->view('tutorsList', $data);
             if (isset($_POST['btnSubmit'])) {
-                $data = array (
+                $tutor = array (
                     'mail' => $this->input->post ('mail'),
                     'nom' => $this->input->post ('nom'),
                     'cicle_impar' => $this->input->post ('cic_impar'),
                 );
-                $this->newTutor($data);
+                $this->newTutor($tutor);
                 
             }
         }

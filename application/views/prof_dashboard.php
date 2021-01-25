@@ -37,7 +37,7 @@
     ?>
     </div>
 
-    <a href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
+    <a class="btn btn-primary" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
 
 </body>
 

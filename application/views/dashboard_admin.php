@@ -12,13 +12,14 @@
     <h1>Welcome, You are successfully logged in. ADMIN</h1>
 
     <?php
+    echo "<div class='container'>";
     echo $alumnes;
 
     ?>
 
-    <a href='<?php echo base_url() . "index.php/Admin/printTutores"; ?>'>Tutores</a>
-    <a href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
-
+    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Admin/printTutores"; ?>'>Tutores</a>
+    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
+    </div>
 </body>
 
 </html>

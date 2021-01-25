@@ -47,7 +47,13 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('admin_model');
+            $this->load->helper('security');
+            $this->load->library('form_validation');
 
+            $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
             // load table library
             $this->load->library('table');
             // set table template
@@ -60,10 +66,53 @@ class Prof extends CI_Controller
 
             $data['alumnes'] = $this->table->generate($alumnes);
             $this->load->view('prof_dashboard', $data);
+
+            if (isset($_POST['btnSubmit'])) {
+                $this->newalu_action();
+            }
         }
     }
 
+    public function newalu_action()
+    {
+        if ($this->form_validation->run()) {
+            $alum = array(
+                'mail' => $this->input->post('mail'),
+                'nom' => $this->input->post('nom'),
+                'curs_FCT' => $this->input->post('fct'),
+                'telf' => $this->input->post('telf')
+            );
+            $this->newTutor($alum);
+        }
+    }
+    public function newTutor($alum)
+    {
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $this->load->model('Alum_model');
+            $this->load->model('User_model');
 
+            $user = array(
+                'mail' => $alum['mail'],
+                'pass' => $this->random_password(),
+                'nom' => $alum['nom'],
+                'rol' => '1'
+            );
+
+            $this->User_model->newUser($user);
+            $idalum = $this->User_model->getIdUser($alum['mail']);
+
+            $newAlu = array(
+                'idAlumne' => $idalum,
+                'curs_FCT' => $alum['curs_FCT'],
+                'telefon' => $alum['telf']
+            );
+
+            $this->Alum_model->newAlum($newAlu);
+            redirect('/Prof/printAlumnes');
+        }
+    }
     private function random_password()
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';

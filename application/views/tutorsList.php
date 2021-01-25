@@ -12,7 +12,9 @@
     <h1>Welcome, You are successfully logged in. ADMIN</h1>
 
     <?php
+    echo "<div class='container'>";
     echo $tutors;
+
     $formTut = form_open('Admin/printTutores');
     $formTut .= validation_errors();
 
@@ -28,11 +30,15 @@
     $formTut .= form_submit('btnSubmit', 'Create new tutor');
 
     $formTut .= form_close();
-    echo $formTut;
-    ?>
 
+    echo $formTut;
+
+
+    ?>
     <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Admin/printAlumnes"; ?>'>PrintAlumnes</a>
     <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
+    </div>
+
 
 </body>
 

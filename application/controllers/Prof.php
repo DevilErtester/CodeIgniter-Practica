@@ -46,7 +46,7 @@ class Prof extends CI_Controller
         if (!$this->is_logged()) {
             $this->invalid();
         } else {
-            $this->load->model('admin_model');
+            $this->load->model('Alum_model');
             $this->load->helper('security');
             $this->load->library('form_validation');
 
@@ -60,9 +60,9 @@ class Prof extends CI_Controller
             $style = array('table_open'  => '<table class="table table-bordered table-hover">');
             $this->table->set_template($style);
             // set table heading
-            $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT', 'TutorId', 'Cicle Impartit');
+            $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT');
 
-            $alumnes = $this->admin_model->getAllAlumnes();
+            $alumnes = $this->Alum_model->getAllAlumnes();
 
             $data['alumnes'] = $this->table->generate($alumnes);
             $this->load->view('prof_dashboard', $data);
@@ -73,7 +73,7 @@ class Prof extends CI_Controller
         }
     }
 
-    public function newalu_action()
+    private function newalu_action()
     {
         if ($this->form_validation->run()) {
             $alum = array(
@@ -85,6 +85,7 @@ class Prof extends CI_Controller
             $this->newTutor($alum);
         }
     }
+
     public function newTutor($alum)
     {
         if (!$this->is_logged()) {
@@ -113,12 +114,13 @@ class Prof extends CI_Controller
             redirect('/Prof/printAlumnes');
         }
     }
+
     private function random_password()
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
         $password = array();
         $alpha_length = strlen($alphabet) - 1;
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $n = rand(0, $alpha_length);
             $password[] = $alphabet[$n];
         }

@@ -6,4 +6,14 @@ class Alum_model extends CI_Model
     {
         $this->db->insert('alumnes', $alumnes);
     }
+    public function getAllAlumnes()
+    {
+        $this->db->select('*');
+        $this->db->from('alumnes');
+
+
+        $query = $this->db->get();
+
+        return $query;
+    }
 }

@@ -80,7 +80,7 @@ class Prof extends CI_Controller
 
             $data['taula'] = $this->table->generate($alumnes);
             $data['form'] = $this->formAlu();
-            $data['func'] = "index.php/Admin/Empresas";
+            $data['func'] = "index.php/Prof/Empresas";
             $data['funcName'] = "Empresas";
             $this->load->view('prof_dashboard', $data);
 
@@ -144,5 +144,17 @@ class Prof extends CI_Controller
             $password[] = $alphabet[$n];
         }
         return implode("", $password);
+    }
+    public function Empresas()
+    {
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $data['taula'] = null;
+            $data['form'] = null;
+            $data['func'] = "index.php/Prof/printAlumnes";
+            $data['funcName'] = "Alumnes";
+            $this->load->view('prof_dashboard', $data);
+        }
     }
 }

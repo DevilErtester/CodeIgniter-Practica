@@ -12,6 +12,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->helper('security');
     }
     public function is_logged()
     {
@@ -26,7 +27,7 @@ class Admin extends CI_Controller
     {
         if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 0) {
 
-            $this->load->view('dashboard_admin');
+            $this->load->view('admin_dashboard');
             redirect('Admin/printAlumnes');
         } else {
             redirect('Admin/invalid');
@@ -77,8 +78,6 @@ class Admin extends CI_Controller
     private function formTut()
     {
         $formTut = form_open('Admin/printTutores');
-        $formTut .= validation_errors();
-
         $formTut .= form_label('Email', 'mail');
         $formTut .= form_input(['name' => 'mail']);
 
@@ -104,16 +103,11 @@ class Admin extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Tutors_model');
-            $this->load->helper('security');
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('mail', 'Email:', 'required|trim|xss_clean');
-            $this->form_validation->set_rules('nom', 'Nom:', 'required|trim|xss_clean');
-            $this->form_validation->set_rules(
-                'cic_impar',
-                'Cicle impartit:',
-                'required|trim|xss_clean'
-            );
+            $this->form_validation->set_rules('mail', 'email', 'required|trim|xss_clean|is_unique[users.mail]');
+            $this->form_validation->set_rules('nom', 'nom', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('cic_impar', 'cicle impartit', 'required|trim|xss_clean');
             // load table library
             $this->load->library('table');
             // set table template
@@ -129,22 +123,22 @@ class Admin extends CI_Controller
             $data['form'] = $this->formTut();
             $data['func'] = "index.php/Admin/printAlumnes";
             $data['funcName'] = "Alumnes";
-            $this->load->view('admin_dashboard', $data);
+
+            // if (!isset($_POST['btnSubmit']))
+            //     $this->load->view('admin_dashboard', $data);
+
             if (isset($_POST['btnSubmit'])) {
-                $this->newtutor_action();
+                if ($this->form_validation->run()) {
+                    $tutor = array(
+                        'mail' => $this->input->post('mail'),
+                        'nom' => $this->input->post('nom'),
+                        'cicle_impar' => $this->input->post('cic_impar'),
+                    );
+                    $this->newTutor($tutor);
+                    redirect('Admin/printTutores');
+                }
             }
-        }
-    }
-    // validates the form when trying to create a new tutor
-    public function newtutor_action()
-    {
-        if ($this->form_validation->run()) {
-            $tutor = array(
-                'mail' => $this->input->post('mail'),
-                'nom' => $this->input->post('nom'),
-                'cicle_impar' => $this->input->post('cic_impar'),
-            );
-            $this->newTutor($tutor);
+            $this->load->view('admin_dashboard', $data);
         }
     }
     // creates a new tutor given an asociative array

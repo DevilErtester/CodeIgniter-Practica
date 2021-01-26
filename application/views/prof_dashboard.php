@@ -13,12 +13,13 @@
     <div class='container'>
         <?php
         echo $taula;
+        echo validation_errors();
         echo $form;
         ?>
-    </div>
-    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . $func; ?>'><?php echo $funcName; ?></a>
-    <a class="btn btn-primary" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
 
+        <a class="btn btn-primary btn-sm" href='<?php echo base_url() . $func; ?>'><?php echo $funcName; ?></a>
+        <a class="btn btn-primary" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
+    </div>
 </body>
 
 </html>

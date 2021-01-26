@@ -12,6 +12,7 @@ class Prof extends CI_Controller
         parent::__construct();
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->helper('security');
     }
     public function is_logged()
     {
@@ -54,8 +55,9 @@ class Prof extends CI_Controller
 
     private function formAlu()
     {
+        $this->load->library('form_validation');
+
         $formAlu = form_open('Prof/printAlumnes');
-        $formAlu .= validation_errors();
         $formAlu .= form_label('Email', 'mail');
         $formAlu .= form_input(['name' => 'mail']);
         $formAlu .= form_label('Nom', 'name');
@@ -67,6 +69,11 @@ class Prof extends CI_Controller
         $formAlu .= form_submit('btnSubmit', 'Crear alumne');
         $formAlu .= form_close();
 
+        $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
+        $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
+        $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
+
         return $formAlu;
     }
 
@@ -76,18 +83,6 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Alum_model');
-            $this->load->helper('security');
-            $this->load->library('form_validation');
-
-            $this->form_validation->set_rules(
-                'mail',
-                'Email',
-                'required|trim|xss_clean|is_unique[users.mail]',
-                array('required' => 'You must provide a %s.')
-            );
-            $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
-            $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
-            $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
             // load table library
             $this->load->library('table');
             // set table template
@@ -99,29 +94,27 @@ class Prof extends CI_Controller
             $alumnes = $this->Alum_model->getAllAlumnes();
 
             $data['taula'] = $this->table->generate($alumnes);
+
             $data['form'] = $this->formAlu();
             $data['func'] = "index.php/Prof/Empresas";
             $data['funcName'] = "Empresas";
-            $this->load->view('prof_dashboard', $data);
+
+
 
             if (isset($_POST['btnSubmit'])) {
-                $this->newalu_action();
+                if ($this->form_validation->run()) {
+                    $alum = array(
+                        'mail' => $this->input->post('mail'),
+                        'nom' => $this->input->post('nom'),
+                        'curs_FCT' => $this->input->post('fct'),
+                        'telf' => $this->input->post('telf')
+                    );
+                    $this->newAlu($alum);
+                    redirect('Prof/printAlumnes');
+                }
             }
-        }
-    }
 
-    private function newalu_action()
-    {
-        if ($this->form_validation->run()) {
-            $alum = array(
-                'mail' => $this->input->post('mail'),
-                'nom' => $this->input->post('nom'),
-                'curs_FCT' => $this->input->post('fct'),
-                'telf' => $this->input->post('telf')
-            );
-            $this->newAlu($alum);
-        } else {
-            redirect('Prof/printAlumnes');
+            $this->load->view('prof_dashboard', $data);
         }
     }
 

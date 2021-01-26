@@ -58,11 +58,32 @@ class Admin extends CI_Controller
 
             $alumnes = $this->admin_model->getAllAlumnes();
 
-            $data['alumnes'] = $this->table->generate($alumnes);
-            $this->load->view('dashboard_admin', $data);
+            $data['taula'] = $this->table->generate($alumnes);
+            $data['form'] = null;
+            $data['func'] = "index.php/Admin/printTutores";
+            $data['funcName'] = "Tutores";
+            $this->load->view('admin_dashboard', $data);
         }
     }
+    private function formTut()
+    {
+        $formTut = form_open('Admin/printTutores');
+        $formTut .= validation_errors();
 
+        $formTut .= form_label('Email', 'mail');
+        $formTut .= form_input(['name' => 'mail']);
+
+        $formTut .= form_label('Nom', 'name');
+        $formTut .= form_input(['name' => 'nom']);
+
+        $formTut .= form_label('Cicle impartit', 'cic_impar');
+        $formTut .= form_input(['name' => 'cic_impar']);
+
+        $formTut .= form_submit('btnSubmit', 'Create new tutor');
+
+        $formTut .= form_close();
+        return $formTut;
+    }
     public function printTutores()
     {
         if (!$this->is_logged()) {
@@ -89,9 +110,12 @@ class Admin extends CI_Controller
 
             $tutors = $this->Tutors_model->getAllTutors();
 
-            $data['tutors'] = $this->table->generate($tutors);
+            $data['taula'] = $this->table->generate($tutors);
 
-            $this->load->view('tutorsList', $data);
+            $data['form'] = $this->formTut();
+            $data['func'] = "index.php/Admin/printAlumnes";
+            $data['funcName'] = "Alumnes";
+            $this->load->view('admin_dashboard', $data);
             if (isset($_POST['btnSubmit'])) {
                 $this->newtutor_action();
             }
@@ -120,8 +144,6 @@ class Admin extends CI_Controller
         }
         return implode("", $password);
     }
-
-
     public function newTutor($tutor)
     {
         if (!$this->is_logged()) {
@@ -153,24 +175,24 @@ class Admin extends CI_Controller
     // -------------------------------------------------
     // public function newTutortest()
     // {
-    //     $this->load->model('Tutors_model');
-    //     $this->load->model('User_model');
+    // $this->load->model('Tutors_model');
+    // $this->load->model('User_model');
 
-    //     $user = array(
-    //         'mail' => 'test2',
-    //         'pass' => $this->random_password(),
-    //         'nom' =>'test',
-    //         'rol' => '2'
-    //     );
+    // $user = array(
+    // 'mail' => 'test2',
+    // 'pass' => $this->random_password(),
+    // 'nom' =>'test',
+    // 'rol' => '2'
+    // );
 
-    //     $this->User_model->newUser($user);
-    //     $idTutor = $this->User_model->getIdUser('test2');
+    // $this->User_model->newUser($user);
+    // $idTutor = $this->User_model->getIdUser('test2');
 
-    //     $newTutor = array(
-    //         'idTutor' => $idTutor,
-    //         'cicle_impar' => 'test'
-    //     );
+    // $newTutor = array(
+    // 'idTutor' => $idTutor,
+    // 'cicle_impar' => 'test'
+    // );
 
-    //     $this->Tutors_model->newTutor($newTutor);
+    // $this->Tutors_model->newTutor($newTutor);
     // }
 }

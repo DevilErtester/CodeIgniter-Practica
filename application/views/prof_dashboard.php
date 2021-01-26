@@ -10,33 +10,13 @@
 
 <body>
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
-
-    <?php
-    echo "<div class='container'>";
-    echo $alumnes;
-    $formAlu = form_open('Prof/printAlumnes');
-    $formAlu .= validation_errors();
-
-    $formAlu .= form_label('Email', 'mail');
-    $formAlu .= form_input(['name' => 'mail']);
-
-    $formAlu .= form_label('Nom', 'name');
-    $formAlu .= form_input(['name' => 'nom']);
-
-    $formAlu .= form_label('Telefon', 'telf');
-    $formAlu .= form_input(['name' => 'telf']);
-
-    $formAlu .= form_label('Curs FCT', 'cic_impar');
-    $formAlu .= form_input(['name' => 'fct']);
-
-    $formAlu .= form_submit('btnSubmit', 'Crear alumne');
-
-    $formAlu .= form_close();
-
-    echo $formAlu;
-    ?>
+    <div class='container'>
+        <?php
+        echo $taula;
+        echo $form;
+        ?>
     </div>
-
+    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . $func; ?>'><?php echo $funcName; ?></a>
     <a class="btn btn-primary" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
 
 </body>

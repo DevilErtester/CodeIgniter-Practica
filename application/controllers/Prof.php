@@ -22,7 +22,7 @@ class Prof extends CI_Controller
     {
         if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 2) {
 
-            $this->load->view('dashboard_admin');
+            $this->load->view('prof_dashboard');
             redirect('Prof/printAlumnes');
         } else {
             redirect('Prof/invalid');
@@ -39,7 +39,29 @@ class Prof extends CI_Controller
     {
         $this->load->view('invalid');
     }
+    private function formAlu()
+    {
+        $formAlu = form_open('Prof/printAlumnes');
+        $formAlu .= validation_errors();
 
+        $formAlu .= form_label('Email', 'mail');
+        $formAlu .= form_input(['name' => 'mail']);
+
+        $formAlu .= form_label('Nom', 'name');
+        $formAlu .= form_input(['name' => 'nom']);
+
+        $formAlu .= form_label('Telefon', 'telf');
+        $formAlu .= form_input(['name' => 'telf']);
+
+        $formAlu .= form_label('Curs FCT', 'cic_impar');
+        $formAlu .= form_input(['name' => 'fct']);
+
+        $formAlu .= form_submit('btnSubmit', 'Crear alumne');
+
+        $formAlu .= form_close();
+
+        return $formAlu;
+    }
 
     public function printAlumnes()
     {
@@ -64,7 +86,10 @@ class Prof extends CI_Controller
 
             $alumnes = $this->Alum_model->getAllAlumnes();
 
-            $data['alumnes'] = $this->table->generate($alumnes);
+            $data['taula'] = $this->table->generate($alumnes);
+            $data['form'] = $this->formAlu();
+            $data['func'] = "index.php/Admin/Empresas";
+            $data['funcName'] = "Empresas";
             $this->load->view('prof_dashboard', $data);
 
             if (isset($_POST['btnSubmit'])) {

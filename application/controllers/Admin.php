@@ -3,6 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Admin extends CI_Controller
 {
+    // ===========================================================================================================
+    // ======================STANDARD==============================================================================
+    // ===========================================================================================================
+
     function __construct()
     {
         parent::__construct();
@@ -39,7 +43,11 @@ class Admin extends CI_Controller
     {
         $this->load->view('invalid');
     }
+    // ===========================================================================================================
+    // ======================ALUMNES==============================================================================
+    // ===========================================================================================================
 
+    //prints alumens page asociating given info into $data asociative array
 
     public function printAlumnes()
     {
@@ -65,6 +73,7 @@ class Admin extends CI_Controller
             $this->load->view('admin_dashboard', $data);
         }
     }
+    //returns tutors form
     private function formTut()
     {
         $formTut = form_open('Admin/printTutores');
@@ -84,6 +93,11 @@ class Admin extends CI_Controller
         $formTut .= form_close();
         return $formTut;
     }
+    // ===========================================================================================================
+    // ======================TUTORES==============================================================================
+    // ===========================================================================================================
+
+    //prints tutores page asociating given info into $data asociative array
     public function printTutores()
     {
         if (!$this->is_logged()) {
@@ -121,6 +135,7 @@ class Admin extends CI_Controller
             }
         }
     }
+    // validates the form when trying to create a new tutor
     public function newtutor_action()
     {
         if ($this->form_validation->run()) {
@@ -132,18 +147,7 @@ class Admin extends CI_Controller
             $this->newTutor($tutor);
         }
     }
-
-    private function random_password()
-    {
-        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
-        $password = array();
-        $alpha_length = strlen($alphabet) - 1;
-        for ($i = 0; $i < 8; $i++) {
-            $n = rand(0, $alpha_length);
-            $password[] = $alphabet[$n];
-        }
-        return implode("", $password);
-    }
+    // creates a new tutor given an asociative array
     public function newTutor($tutor)
     {
         if (!$this->is_logged()) {
@@ -171,28 +175,16 @@ class Admin extends CI_Controller
             redirect('/Admin/printTutores');
         }
     }
-    //new tutor testing model
-    // -------------------------------------------------
-    // public function newTutortest()
-    // {
-    // $this->load->model('Tutors_model');
-    // $this->load->model('User_model');
-
-    // $user = array(
-    // 'mail' => 'test2',
-    // 'pass' => $this->random_password(),
-    // 'nom' =>'test',
-    // 'rol' => '2'
-    // );
-
-    // $this->User_model->newUser($user);
-    // $idTutor = $this->User_model->getIdUser('test2');
-
-    // $newTutor = array(
-    // 'idTutor' => $idTutor,
-    // 'cicle_impar' => 'test'
-    // );
-
-    // $this->Tutors_model->newTutor($newTutor);
-    // }
+    //generates a random password using given alphabet
+    private function random_password()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
+        $password = array();
+        $alpha_length = strlen($alphabet) - 1;
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alpha_length);
+            $password[] = $alphabet[$n];
+        }
+        return implode("", $password);
+    }
 }

@@ -3,6 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Prof extends CI_Controller
 {
+    // ===========================================================================================================
+    // ======================STANDARD==============================================================================
+    // ===========================================================================================================
+
     function __construct()
     {
         parent::__construct();
@@ -32,6 +36,22 @@ class Prof extends CI_Controller
     {
         $this->load->view('invalid');
     }
+
+    private function random_password()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
+        $password = array();
+        $alpha_length = strlen($alphabet) - 1;
+        for ($i = 0; $i < 12; $i++) {
+            $n = rand(0, $alpha_length);
+            $password[] = $alphabet[$n];
+        }
+        return implode("", $password);
+    }
+    // ===========================================================================================================
+    // ======================ALUMNES==============================================================================
+    // ===========================================================================================================
+
     private function formAlu()
     {
         $formAlu = form_open('Prof/printAlumnes');
@@ -134,17 +154,10 @@ class Prof extends CI_Controller
         }
     }
 
-    private function random_password()
-    {
-        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/#$%&';
-        $password = array();
-        $alpha_length = strlen($alphabet) - 1;
-        for ($i = 0; $i < 12; $i++) {
-            $n = rand(0, $alpha_length);
-            $password[] = $alphabet[$n];
-        }
-        return implode("", $password);
-    }
+    // ===========================================================================================================
+    // ======================EMPRESAS=============================================================================
+    // ===========================================================================================================
+
     public function Empresas()
     {
         if (!$this->is_logged()) {

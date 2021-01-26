@@ -124,9 +124,6 @@ class Admin extends CI_Controller
             $data['func'] = "index.php/Admin/printAlumnes";
             $data['funcName'] = "Alumnes";
 
-            // if (!isset($_POST['btnSubmit']))
-            //     $this->load->view('admin_dashboard', $data);
-
             if (isset($_POST['btnSubmit'])) {
                 if ($this->form_validation->run()) {
                     $tutor = array(

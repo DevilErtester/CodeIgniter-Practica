@@ -99,8 +99,6 @@ class Prof extends CI_Controller
             $data['func'] = "index.php/Prof/Empresas";
             $data['funcName'] = "Empresas";
 
-
-
             if (isset($_POST['btnSubmit'])) {
                 if ($this->form_validation->run()) {
                     $alum = array(
@@ -113,7 +111,6 @@ class Prof extends CI_Controller
                     redirect('Prof/printAlumnes');
                 }
             }
-
             $this->load->view('prof_dashboard', $data);
         }
     }
@@ -156,11 +153,28 @@ class Prof extends CI_Controller
         if (!$this->is_logged()) {
             $this->invalid();
         } else {
-            $data['taula'] = null;
+            $this->load->model('Empresa_model');
+            // load table library
+            $this->load->library('table');
+            // set table template
+            $style = array('table_open'  => '<table class="table table-bordered table-hover">');
+            $this->table->set_template($style);
+            // set table heading
+            $this->table->set_heading('ID Empresa', 'Nom', 'CIF', 'ID Persona', '');
+
+            $empresas = $this->Empresa_model->getAll();
+
+            $data['taula'] = $empresas;
             $data['form'] = null;
             $data['func'] = "index.php/Prof/printAlumnes";
             $data['funcName'] = "Alumnes";
-            $this->load->view('prof_dashboard', $data);
+            if (isset($_POST['btnSubmit'])) {
+                if ($this->form_validation->run()) {
+
+                    redirect('Prof/Empresas');
+                }
+            }
+            $this->load->view('prof_empresa', $data);
         }
     }
 }

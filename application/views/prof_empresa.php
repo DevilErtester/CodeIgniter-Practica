@@ -13,6 +13,7 @@
     <div class='container'>
 
         <?php
+
         echo $taula;
         echo validation_errors();
         echo $form;

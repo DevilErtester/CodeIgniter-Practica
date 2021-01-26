@@ -21,17 +21,10 @@ class Prof extends CI_Controller
     public function dashboard_controller()
     {
         if ($this->session->userdata('currently_logged_in') &&  $this->session->userdata('rol') == 2) {
-
-            $this->load->view('prof_dashboard');
             redirect('Prof/printAlumnes');
         } else {
             redirect('Prof/invalid');
         }
-    }
-    public function index()
-    {
-        $this->dashboard_controller();
-        $this->printAlumnes();
     }
 
 
@@ -43,21 +36,15 @@ class Prof extends CI_Controller
     {
         $formAlu = form_open('Prof/printAlumnes');
         $formAlu .= validation_errors();
-
         $formAlu .= form_label('Email', 'mail');
         $formAlu .= form_input(['name' => 'mail']);
-
         $formAlu .= form_label('Nom', 'name');
         $formAlu .= form_input(['name' => 'nom']);
-
         $formAlu .= form_label('Telefon', 'telf');
         $formAlu .= form_input(['name' => 'telf']);
-
         $formAlu .= form_label('Curs FCT', 'cic_impar');
         $formAlu .= form_input(['name' => 'fct']);
-
         $formAlu .= form_submit('btnSubmit', 'Crear alumne');
-
         $formAlu .= form_close();
 
         return $formAlu;
@@ -72,9 +59,14 @@ class Prof extends CI_Controller
             $this->load->helper('security');
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean');
+            $this->form_validation->set_rules(
+                'mail',
+                'Email',
+                'required|trim|xss_clean|is_unique[users.mail]',
+                array('required' => 'You must provide a %s.')
+            );
             $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
-            $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
             $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
             // load table library
             $this->load->library('table');
@@ -107,11 +99,13 @@ class Prof extends CI_Controller
                 'curs_FCT' => $this->input->post('fct'),
                 'telf' => $this->input->post('telf')
             );
-            $this->newTutor($alum);
+            $this->newAlu($alum);
+        } else {
+            redirect('Prof/printAlumnes');
         }
     }
 
-    public function newTutor($alum)
+    public function newAlu($alum)
     {
         if (!$this->is_logged()) {
             $this->invalid();

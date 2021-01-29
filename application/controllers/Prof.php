@@ -154,13 +154,6 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Empresa_model');
-            // load table library
-            $this->load->library('table');
-            // set table template
-            $style = array('table_open'  => '<table class="table table-bordered table-hover">');
-            $this->table->set_template($style);
-            // set table heading
-            $this->table->set_heading('ID Empresa', 'Nom', 'CIF', 'ID Persona', '');
 
             $empresas = $this->Empresa_model->getAll();
 
@@ -168,15 +161,22 @@ class Prof extends CI_Controller
             $data['form'] = $this->formEmp();
             $data['func'] = "index.php/Prof/printAlumnes";
             $data['funcName'] = "Alumnes";
+            
             if (isset($_POST['btnSubmit'])) {
                 if ($this->form_validation->run()) {
-
+                    $empresa = array(
+                        'nom' => $this->input->post('nom'),
+                        'CIF' => $this->input->post('cif'),
+                        'idPersona' => $this->input->post('idPers'), 
+                    );
+                    $this->Empresa_model->newEmp($empresa);
                     redirect('Prof/Empresas');
                 }
             }
             $this->load->view('prof_empresa', $data);
         }
     }
+  
     public function formEmp()
     {
         $this->load->library('form_validation');

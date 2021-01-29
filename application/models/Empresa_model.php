@@ -8,11 +8,17 @@ class Empresa_model extends CI_Model
         $this->db->from('empresa');
 
         $query = $this->db->get();
-
-        return $query;
+        $row = $query->result_array();
+        return $row;
     }
     public function newEmp($emp)
     {
         $this->db->insert('empresa', $emp);
     }
+    public function delEmp($idEmp)
+    {
+        $this->db->delete('empresa', array('idEmpresa' => $idEmp));
+    }
 }
+
+

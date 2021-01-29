@@ -165,7 +165,7 @@ class Prof extends CI_Controller
             $empresas = $this->Empresa_model->getAll();
 
             $data['taula'] = $empresas;
-            $data['form'] = null;
+            $data['form'] = $this->formEmp();
             $data['func'] = "index.php/Prof/printAlumnes";
             $data['funcName'] = "Alumnes";
             if (isset($_POST['btnSubmit'])) {
@@ -176,5 +176,36 @@ class Prof extends CI_Controller
             }
             $this->load->view('prof_empresa', $data);
         }
+    }
+    public function formEmp()
+    {
+        $this->load->library('form_validation');
+
+        $formEmp = form_open('Prof/Empresas');
+        $formEmp .= form_label('Nom Empresa', 'nom');
+        $formEmp .= form_input(['name' => 'nom']);
+        $formEmp .= form_label('CIF', 'CIF');
+        $formEmp .= form_input(['name' => 'cif']);
+        $formEmp .= form_label('Persona contacte', 'idPers');
+        $formEmp .= form_input(['name' => 'idPers']);
+        $formEmp .= form_submit('btnSubmit', 'Crear Empresa');
+        $formEmp .= form_close();
+
+        $this->form_validation->set_rules('nom', 'Nom Empresa', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('cif', 'CIF', 'required|trim|xss_clean|is_unique[empresa.cif]');
+        $this->form_validation->set_rules('idPers', 'Persona contacte', 'required|trim|xss_clean');
+
+        return $formEmp;
+    }
+    public function deleteEmp($idEmp)
+    {
+        $this->load->model('Empresa_model');
+        $this->Empresa_model->delEmp($idEmp);
+        redirect('/Prof/Empresas');
+    }
+    public function editEmp($idEmp)
+    {
+        //In need to learn how to do modifications
+        redirect('/Prof/Empresas');
     }
 }

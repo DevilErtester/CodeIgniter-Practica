@@ -161,13 +161,13 @@ class Prof extends CI_Controller
             $data['form'] = $this->formEmp();
             $data['func'] = "index.php/Prof/printAlumnes";
             $data['funcName'] = "Alumnes";
-            
+
             if (isset($_POST['btnSubmit'])) {
                 if ($this->form_validation->run()) {
                     $empresa = array(
                         'nom' => $this->input->post('nom'),
                         'CIF' => $this->input->post('cif'),
-                        'idPersona' => $this->input->post('idPers'), 
+                        'idPersona' => $this->input->post('idPers')
                     );
                     $this->Empresa_model->newEmp($empresa);
                     redirect('Prof/Empresas');
@@ -176,7 +176,7 @@ class Prof extends CI_Controller
             $this->load->view('prof_empresa', $data);
         }
     }
-  
+
     public function formEmp()
     {
         $this->load->library('form_validation');

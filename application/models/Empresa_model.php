@@ -8,8 +8,8 @@ class Empresa_model extends CI_Model
         $this->db->from('empresa');
 
         $query = $this->db->get();
-        $row = $query->result_array();
-        return $row;
+        $array = $query->result_array();
+        return $array;
     }
     public function newEmp($emp)
     {
@@ -20,5 +20,3 @@ class Empresa_model extends CI_Model
         $this->db->delete('empresa', array('idEmpresa' => $idEmp));
     }
 }
-
-

@@ -10,34 +10,39 @@
 </head>
 
 <body>
-    <h1>Login</h1>
 
-    <?php
+    <div class="d-flex justify-content-center">
+        <?php
+        echo "<div>";
+        echo "<h1 class='d-flex justify-content-center'>Login</h1>";
+        echo form_open('Main/login_action');
 
-    echo form_open('Main/login_action');
+        echo validation_errors();
 
-    echo validation_errors();
+        echo "<p>Username: ";
+        echo form_input('username', $this->input->post('username'));
+        echo "</p>";
 
-    echo "<p>Username: ";
-    echo form_input('username', $this->input->post('username'));
-    echo "</p>";
+        echo "<p>Password: ";
+        echo form_password('password');
+        echo "</p>";
 
-    echo "<p>Password: ";
-    echo form_password('password');
-    echo "</p>";
+        echo "</p>";
+        $data = array(
+            'class' => 'btn btn-primary btn-sm'
+        );
+        echo '<div class="d-flex justify-content-center">';
+        echo form_submit('login_submit', 'Login', $data);
+        echo "</p>";
 
-    echo "</p>";
-    $data = array(
-        'class' => 'btn btn-primary btn-sm'
-    );
-    echo form_submit('login_submit', 'Login', $data);
-    echo "</p>";
+        echo form_close();
 
-    echo form_close();
+        ?>
 
-    ?>
-
-    <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/signin"; ?>'>Sign In</a>
+        <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/signin"; ?>'>Sign In</a>
+    </div>
+    </div>
+    </div>
 </body>
 
 </html>

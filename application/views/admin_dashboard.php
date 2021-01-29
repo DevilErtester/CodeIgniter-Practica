@@ -11,7 +11,7 @@
     <h1>Welcome, You are successfully logged in. ADMIN</h1>
     <div class='container'>
         <?php
-        var_dump($taula);
+        echo ($taula);
         echo validation_errors();
         echo $form;
         ?>

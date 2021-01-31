@@ -52,31 +52,6 @@ class Prof extends CI_Controller
     // ===========================================================================================================
     // ======================ALUMNES==============================================================================
     // ===========================================================================================================
-
-    private function formAlu()
-    {
-        $this->load->library('form_validation');
-
-        $formAlu = form_open('Prof/printAlumnes');
-        $formAlu .= form_label('Email', 'mail');
-        $formAlu .= form_input(['name' => 'mail']);
-        $formAlu .= form_label('Nom', 'name');
-        $formAlu .= form_input(['name' => 'nom']);
-        $formAlu .= form_label('Telefon', 'telf');
-        $formAlu .= form_input(['name' => 'telf']);
-        $formAlu .= form_label('Curs FCT', 'cic_impar');
-        $formAlu .= form_input(['name' => 'fct']);
-        $formAlu .= form_submit('btnSubmit', 'Crear alumne');
-        $formAlu .= form_close();
-
-        $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
-        $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
-        $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
-
-        return $formAlu;
-    }
-
     public function printAlumnes()
     {
         if (!$this->is_logged()) {
@@ -109,6 +84,30 @@ class Prof extends CI_Controller
         }
     }
 
+    private function formAlu()
+    {
+        $this->load->library('form_validation');
+
+        $formAlu = form_open('Prof/printAlumnes');
+        $formAlu .= form_label('Email', 'mail');
+        $formAlu .= form_input(['name' => 'mail']);
+        $formAlu .= form_label('Nom', 'name');
+        $formAlu .= form_input(['name' => 'nom']);
+        $formAlu .= form_label('Telefon', 'telf');
+        $formAlu .= form_input(['name' => 'telf']);
+        $formAlu .= form_label('Curs FCT', 'cic_impar');
+        $formAlu .= form_input(['name' => 'fct']);
+        $formAlu .= form_submit('btnSubmit', 'Crear alumne');
+        $formAlu .= form_close();
+
+        $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
+        $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
+        $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
+
+        return $formAlu;
+    }
+
     public function newAlu($alum)
     {
         if (!$this->is_logged()) {
@@ -137,12 +136,14 @@ class Prof extends CI_Controller
             redirect('/Prof/printAlumnes');
         }
     }
+
     public function delAlu($idAlu)
     {
         $this->load->model('Alum_model');
         $this->Alum_model->delAlu($idAlu);
         redirect('/Prof/printAlumnes');
     }
+    
     public function editAlu($idAlu)
     {
         

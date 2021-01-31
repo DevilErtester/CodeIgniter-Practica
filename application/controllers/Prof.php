@@ -83,17 +83,11 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Alum_model');
-            // load table library
-            $this->load->library('table');
-            // set table template
-            $style = array('table_open'  => '<table class="table table-bordered table-hover">');
-            $this->table->set_template($style);
-            // set table heading
-            $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT');
+      
 
             $alumnes = $this->Alum_model->getAllAlumnes();
 
-            $data['taula'] = $this->table->generate($alumnes);
+            $data['taula'] = $alumnes;
 
             $data['form'] = $this->formAlu();
             $data['func'] = "index.php/Prof/Empresas";
@@ -142,6 +136,17 @@ class Prof extends CI_Controller
             $this->Alum_model->newAlum($newAlu);
             redirect('/Prof/printAlumnes');
         }
+    }
+    public function delAlu($idAlu)
+    {
+        $this->load->model('Alum_model');
+        $this->Alum_model->delAlu($idAlu);
+        redirect('/Prof/printAlumnes');
+    }
+    public function editAlu($idAlu)
+    {
+        
+        redirect('/Prof/printAlumnes');
     }
 
     // ===========================================================================================================

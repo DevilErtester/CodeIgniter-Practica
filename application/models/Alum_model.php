@@ -5,6 +5,7 @@ class Alum_model extends CI_Model
     public function newAlum($alumnes)
     {
         $this->db->insert('alumnes', $alumnes);
+        
     }
     public function getAllAlumnes()
     {
@@ -14,6 +15,11 @@ class Alum_model extends CI_Model
 
         $query = $this->db->get();
 
-        return $query;
+        $array = $query->result_array();
+        return $array;
+    }
+    public function delAlu($idAlu)
+    {
+        $this->db->delete('alumnes', array('idAlumne' => $idAlu));
     }
 }

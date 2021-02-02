@@ -58,7 +58,7 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Alum_model');
-      
+
 
             $alumnes = $this->Alum_model->getAllAlumnes();
 
@@ -83,6 +83,62 @@ class Prof extends CI_Controller
             $this->load->view('prof_dashboard', $data);
         }
     }
+    // ===========================================================================================================
+    // ======================GRUP ALUMNES=========================================================================
+    // ===========================================================================================================
+    public function importCsv()
+    {
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $this->load->model('Alum_model');
+
+
+            $alumnes = $this->Alum_model->getAllAlumnes();
+
+            $data['taula'] = $alumnes;
+            // $data['form'] = $this->formAluCSV();
+
+            if (isset($_POST['submit'])) {
+
+                $alumnescsv = $this->uploadData();
+
+                foreach ($alumnescsv as $alumne) {
+                    $this->newAlu($alumne);
+                }
+                redirect('Prof/importCSV');
+            }
+            $this->load->view('prof_importcsv', $data);
+        }
+    }
+    function uploadData()
+    {
+        $i = 0;
+        $count = 0;
+        $fp = fopen($_FILES['userfile']['tmp_name'], 'r') or die("can't open file");
+        while ($csv_line = fgetcsv($fp, 1024)) {
+            $count++;
+            if ($count == 1) {
+                continue;
+            } //keep this if condition if you want to remove the first row
+
+            $insert_csv = array();
+            $insert_csv['mail'] = $csv_line[0];
+            $insert_csv['nom'] = $csv_line[1];
+            $insert_csv['telf'] = $csv_line[2];
+            $insert_csv['curs_FCT'] = $csv_line[3];
+
+            $data[$i] = array(
+                'mail' => $insert_csv['mail'],
+                'nom' => $insert_csv['nom'],
+                'telf' => $insert_csv['telf'],
+                'curs_FCT' => $insert_csv['curs_FCT']
+            );
+            $i++;
+        }
+        fclose($fp) or die("can't close file");
+        return $data;
+    }
 
     private function formAlu()
     {
@@ -104,9 +160,12 @@ class Prof extends CI_Controller
         $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
         $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
         $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('CSV', 'CSV File', 'required|trim|xss_clean');
 
         return $formAlu;
     }
+
+
 
     public function newAlu($alum)
     {
@@ -133,7 +192,6 @@ class Prof extends CI_Controller
             );
 
             $this->Alum_model->newAlum($newAlu);
-            redirect('/Prof/printAlumnes');
         }
     }
 
@@ -143,10 +201,10 @@ class Prof extends CI_Controller
         $this->Alum_model->delAlu($idAlu);
         redirect('/Prof/printAlumnes');
     }
-    
+
     public function editAlu($idAlu)
     {
-        
+
         redirect('/Prof/printAlumnes');
     }
 

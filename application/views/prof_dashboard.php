@@ -26,6 +26,9 @@
             </div>
         </div>
     </nav>
+    <?php if(!empty($status)){
+        echo '<div class="alert alert-danger">'.$status.'</div>';
+    } ?>
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
@@ -52,6 +55,7 @@
         echo validation_errors();
         echo $form;
         ?>
+        
     </div>
 </body>
 </html>

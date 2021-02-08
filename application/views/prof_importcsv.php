@@ -19,20 +19,13 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo base_url() . $func; ?>"><?php echo $funcName; ?></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo base_url() . "index.php/Prof/importCsv" ?>">Inserir grup
-                            alumnes</a>
+                        <a class="nav-link" href="<?php echo base_url() . "index.php/Prof/printAlumnes" ?>">Alumnes</a>
                     </li>
                 </ul>
                 <a class="btn btn-primary btn-sm" href='<?php echo base_url() . "index.php/Main/logout"; ?>'>Logout</a>
             </div>
         </div>
     </nav>
-    <?php if(!empty($status)){
-        echo '<div class="alert alert-danger">'.$status.'</div>';
-    } ?>
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
@@ -56,10 +49,23 @@
                         </tr>";
         }
         echo '</table >';
-        echo validation_errors();
-        echo $form;
         ?>
-        
+        <form action="<?php echo site_url(); ?>/Prof/importCsv" method="post" enctype="multipart/form-data" name="form1"
+            id="form1">
+            <table>
+                <tr>
+                    <td> Choose your file: </td>
+                    <td>
+                        <input type="file" class="form-control" name="userfile" id="userfile" align="center" />
+                    </td>
+                    <td>
+                        <div class="col-lg-offset-3 col-lg-9">
+                            <button type="submit" name="submit" class="btn btn-info">Save</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
 </body>
 

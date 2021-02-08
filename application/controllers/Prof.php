@@ -57,10 +57,22 @@ class Prof extends CI_Controller
         if (!$this->is_logged()) {
             $this->invalid();
         } else {
-            $this->load->model('Alum_model');
-
-
-            $alumnes = $this->Alum_model->getAllAlumnes();
+			$this->load->model('Alum_model');
+			
+			$filter = $this->input->post('filter');
+        	$field  = $this->input->post('field');
+			$search = $this->input->post('search');
+			
+			if (isset($filter) && !empty($search)) {
+				$alumnes = $this->Alum_model->getAlumnesWhereLike($field, $search);
+			} else if(isset($filter)&& empty($search) ){
+				$alumnes = $this->Alum_model->getAlumnesOrderBy($field);
+			} 
+			else {
+				$alumnes = $this->Alum_model->getAllAlumnes();
+			}
+	
+            
 
             $data['taula'] = $alumnes;
 
@@ -128,7 +140,7 @@ class Prof extends CI_Controller
             $insert_csv['telf'] = $csv_line[2];
             $insert_csv['curs_FCT'] = $csv_line[3];
 
-            $data[$i] = array(
+            $alumnos[$i] = array(
                 'mail' => $insert_csv['mail'],
                 'nom' => $insert_csv['nom'],
                 'telf' => $insert_csv['telf'],
@@ -137,7 +149,7 @@ class Prof extends CI_Controller
             $i++;
         }
         fclose($fp) or die("can't close file");
-        return $data;
+        return $alumnos;
     }
 
     private function formAlu()
@@ -160,8 +172,7 @@ class Prof extends CI_Controller
         $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
         $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
         $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('CSV', 'CSV File', 'required|trim|xss_clean');
-
+      
         return $formAlu;
     }
 

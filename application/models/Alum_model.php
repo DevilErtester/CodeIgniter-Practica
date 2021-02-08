@@ -16,7 +16,17 @@ class Alum_model extends CI_Model
 
         $array = $query->result_array();
         return $array;
-    }
+	}
+	public function getAlumnesOrderBy($field)
+	{
+		$query = $this->db->order_by($field)->get('alumnes');
+		return $query->result_array();
+	}
+	public function getAlumnesWhereLike($field, $search)
+	{
+		$query = $this->db->like($field, $search)->get('alumnes');
+		return $query->result_array();
+	}
     public function delAlu($idAlu)
     {
         $this->db->delete('alumnes', array('idAlumne' => $idAlu));

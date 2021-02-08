@@ -33,7 +33,16 @@
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
-
+	<form class="form-inline" action="<?php echo base_url() . 'index.php/Prof/printAlumnes'; ?>" method="post">
+        <select class="form-control" name="field">
+            <option selected="selected" disabled="disabled" value="">Filter By</option>
+            <option value="idAlumne ">id Alumne</option>
+            <option value="curs_FCT">Curs FCT</option>
+            <option value="telefon">Telefon</option>
+        </select>
+        <input class="form-control" type="text" name="search" value="" placeholder="Search...">
+        <input class="btn btn-default" type="submit" name="filter" value="Go">
+    </form>
         <?php
         echo '<table class="  p-3 table table-bordered table-hover">';
         echo '    

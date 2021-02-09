@@ -166,7 +166,7 @@ class Prof extends CI_Controller
         $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
         $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
         $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
-        $this->form_validation->set_rules('fct', 'Curs FCT', 'required|trim|xss_clean');
+
 
         return $formAlu;
     }

@@ -30,7 +30,6 @@
             </div>
         </div>
     </nav>
-    <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
 

@@ -33,28 +33,37 @@
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
-	<form class="form-inline" action="<?php echo base_url() . 'index.php/Prof/printAlumnes'; ?>" method="post">
-        <select class="form-control" name="field">
-            <option selected="selected" disabled="disabled" value="">Filter By</option>
-            <option value="idAlumne ">id Alumne</option>
-            <option value="curs_FCT">Curs FCT</option>
-            <option value="telefon">Telefon</option>
-        </select>
-        <input class="form-control" type="text" name="search" value="" placeholder="Search...">
-        <input class="btn btn-default" type="submit" name="filter" value="Go">
-    </form>
+
+        <form class="w-50 row g-3 form-inline" action="<?php echo base_url() . 'index.php/Prof/printAlumnes'; ?>"
+            method="post">
+            <div class="col">
+                <select class="form-control" name="field">
+                    <option selected="selected" disabled="disabled" value="">Filter By</option>
+                    <option value="idAlumne">id Alumne</option>
+                    <option value="nom">Nom</option>
+                    <option value="mail">Email</option>
+                    <option value="curs_FCT">Curs FCT</option>
+                    <option value="telefon">Telefon</option>
+                </select>
+            </div>
+            <input class="col form-control" type="text" name="search" value="" placeholder="Search...">
+            <input class="col-auto btn btn-primary" type="submit" name="filter" value="Go">
+        </form>
+
         <?php
         echo '<table class="  p-3 table table-bordered table-hover">';
         echo '    
                 <thead>
                 <tr>
-                <th>id Alumne</th><th>Telefon</th><th>Curs FCT</th><th>Elimina</th> <th>Modifica</th></tr>
+                <th>id Alumne</th><th>Nom</th><th>Mail</th><th>Telefon</th><th>Curs FCT</th><th>Elimina</th> <th>Modifica</th></tr>
                 </thead>';
         foreach ($taula as $alumne) {
             $url_delete = site_url('/Prof/delAlu/' . $alumne['idAlumne']);
             $url_edit = site_url('/Prof/editAlu/' . $alumne['idAlumne']);
             echo "<tr>
                         <td>" . $alumne['idAlumne'] . "</td>
+                        <td>" . $alumne['nom'] . "</td>
+                        <td>" . $alumne['mail'] . "</td>
                         <td>" . $alumne['telefon'] . "</td>
                         <td>" . $alumne['curs_FCT'] . "</td>
                         <td><a class='btn btn-danger btn-sm' href='" . $url_delete . "'>Elimina</a></td>
@@ -65,7 +74,7 @@
         echo validation_errors();
         echo $form;
         ?>
-        
+
     </div>
 </body>
 

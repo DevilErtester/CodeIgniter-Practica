@@ -29,24 +29,26 @@
     <h1>Welcome, You are successfully logged in.PROFESORES</h1>
 
     <div class='container'>
-	
+
         <?php
         echo '<table class="  p-3 table table-bordered table-hover">';
         echo '    
-                <thead>
-                <tr>
-                <th>id Alumne</th><th>Telefon</th><th>Curs FCT</th><th>Elimina</th> <th>Modifica</th></tr>
-                </thead>';
+        <thead>
+        <tr>
+        <th>id Alumne</th><th>Nom</th><th>Mail</th><th>Telefon</th><th>Curs FCT</th><th>Elimina</th> <th>Modifica</th></tr>
+        </thead>';
         foreach ($taula as $alumne) {
             $url_delete = site_url('/Prof/delAlu/' . $alumne['idAlumne']);
             $url_edit = site_url('/Prof/editAlu/' . $alumne['idAlumne']);
             echo "<tr>
-                        <td>" . $alumne['idAlumne'] . "</td>
-                        <td>" . $alumne['telefon'] . "</td>
-                        <td>" . $alumne['curs_FCT'] . "</td>
-                        <td><a class='btn btn-danger btn-sm' href='" . $url_delete . "'>Elimina</a></td>
-                        <td><a class='btn btn-warning btn-sm' href='" . $url_edit . "'>Modifica</a></td>
-                        </tr>";
+                    <td>" . $alumne['idAlumne'] . "</td>
+                    <td>" . $alumne['nom'] . "</td>
+                    <td>" . $alumne['mail'] . "</td>
+                    <td>" . $alumne['telefon'] . "</td>
+                    <td>" . $alumne['curs_FCT'] . "</td>
+                    <td><a class='btn btn-danger btn-sm' href='" . $url_delete . "'>Elimina</a></td>
+                    <td><a class='btn btn-warning btn-sm' href='" . $url_edit . "'>Modifica</a></td>
+                    </tr>";
         }
         echo '</table >';
         ?>

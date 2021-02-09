@@ -58,6 +58,8 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Alum_model');
+            $this->load->model('Tutors_model');
+
 
             $filter = $this->input->post('filter');
             $field  = $this->input->post('field');
@@ -70,6 +72,7 @@ class Prof extends CI_Controller
             else
                 $alumnes = $this->Alum_model->getAllAlumnes();
 
+            $data['cursos'] = $this->Tutors_model->getAllCursos();
             $data['taula'] = $alumnes;
             $data['form'] = $this->formAlu();
             $data['func'] = "index.php/Prof/Empresas";
@@ -86,6 +89,13 @@ class Prof extends CI_Controller
                     $this->newAlu($alum);
                     redirect('Prof/printAlumnes');
                 }
+            }
+            if (isset($_POST['newCurs'])) {
+                $arrayRes = explode(" ", $this->input->post('curs'));
+                $idAlu = $arrayRes[0];
+                $curs = $arrayRes[1];
+                $this->Alum_model->addCurs($idAlu, $curs);
+                redirect('Prof/printAlumnes');
             }
             $this->load->view('prof_dashboard', $data);
         }

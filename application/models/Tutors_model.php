@@ -13,4 +13,10 @@ class Tutors_model extends CI_Model
         $query = $this->db->get();
         return $query;
     }
+    public function getAllCursos()
+    {
+        $query = $this->db->select('cicle_impar');
+        $query = $this->db->get('tutores');
+        return $query->result_array();
+    }
 }

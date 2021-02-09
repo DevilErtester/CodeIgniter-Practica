@@ -32,4 +32,10 @@ class Alum_model extends CI_Model
         $this->db->delete('alumnes', array('idAlumne' => $idAlu));
         $this->db->delete('users', array('userid' => $idAlu));
     }
+    public function addCurs($idAlu, $curs)
+    {
+        $this->db->set('curs_FCT', $curs);
+        $this->db->where('idAlumne', $idAlu);
+        $this->db->update('alumnes');
+    }
 }

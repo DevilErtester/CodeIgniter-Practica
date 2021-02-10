@@ -6,7 +6,6 @@ class Empresa_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('empresa');
-
         $query = $this->db->get();
         $array = $query->result_array();
         return $array;
@@ -18,5 +17,6 @@ class Empresa_model extends CI_Model
     public function delEmp($idEmp)
     {
         $this->db->delete('empresa', array('idEmpresa' => $idEmp));
-    }
+	}
+	
 }

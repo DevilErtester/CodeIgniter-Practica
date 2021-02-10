@@ -59,7 +59,8 @@ class Prof extends CI_Controller
         } else {
             $this->load->model('Alum_model');
             $this->load->model('Tutors_model');
-
+			$this->load->model('Empresa_model');
+			$this->load->model('Empar_model');
             // Getting the filter inputs
             $filter = $this->input->post('filter');
             $field  = $this->input->post('field');
@@ -71,10 +72,10 @@ class Prof extends CI_Controller
             else if (isset($filter) && empty($search))
                 $alumnes = $this->Alum_model->getAlumnesOrderBy($field);
             else
-                $alumnes = $this->Alum_model->getAllAlumnes();
-
+				$alumnes = $this->Alum_model->getAllAlumnes();
+				
             // perparing data to send with the view load
-            $data['cursos'] = $this->Tutors_model->getAllCursos();
+            $data['empresas'] = $this->Empresa_model->getAll();
             $data['taula'] = $alumnes;
             $data['form'] = $this->formAlu();
             $data['func'] = "index.php/Prof/Empresas";
@@ -96,12 +97,15 @@ class Prof extends CI_Controller
             }
             // Dropdown button for adding cursos
             if (isset($_POST['newCurs'])) {
-                $arrayRes = explode(" ", $this->input->post('curs'));
+                $arrayRes = explode("/", $this->input->post('curs'));
                 $idAlu = $arrayRes[0];
-                $curs = $arrayRes[1];
-                $this->Alum_model->addCurs($idAlu, $curs);
+				$emp = $arrayRes[1];
+				
+				
+                $this->Empar_model->newEmpar($idAlu, $emp);
                 redirect('Prof/printAlumnes');
-            }
+			}
+			
             $this->load->view('prof_dashboard', $data);
         }
     }

@@ -63,7 +63,7 @@ class Admin extends CI_Controller
             $style = array('table_open'  => '<table class="table table-bordered table-hover">');
             $this->table->set_template($style);
             // set table heading
-            $this->table->set_heading('idAlumne', 'Telefon', 'Curs FCT', 'TutorId', 'Cicle Impartit');
+            $this->table->set_heading('idAlumne', 'Telefon', 'FCT', 'Any', 'TutorId', 'Cicle Impartit');
 
             $alumnes = $this->admin_model->getAllAlumnes();
 

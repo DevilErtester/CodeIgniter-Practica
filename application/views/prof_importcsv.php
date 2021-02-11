@@ -34,7 +34,7 @@
         echo '    
         <thead>
         <tr>
-        <th>id Alumne</th><th>Nom</th><th>Mail</th><th>Telefon</th><th>Curs FCT</th></tr>
+        <th>id Alumne</th><th>Nom</th><th>Mail</th><th>Telefon</th><th>Curs FCT</th><th>Any Curs</th></tr>
         </thead>';
         foreach ($taula as $alumne) {
             echo "<tr>
@@ -42,7 +42,8 @@
                     <td>" . $alumne['nom'] . "</td>
                     <td>" . $alumne['mail'] . "</td>
                     <td>" . $alumne['telefon'] . "</td>
-                    <td>" . $alumne['curs_FCT'] . "</td>
+                    <td>" . $alumne['curs'] . "</td>
+                    <td>" . $alumne['anyCurs'] . "</td>
                     </tr>";
         }
         echo '</table >';

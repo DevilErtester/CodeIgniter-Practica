@@ -59,8 +59,8 @@ class Prof extends CI_Controller
         } else {
             $this->load->model('Alum_model');
             $this->load->model('Tutors_model');
-			$this->load->model('Empresa_model');
-			$this->load->model('Empar_model');
+            $this->load->model('Empresa_model');
+            $this->load->model('Empar_model');
             // Getting the filter inputs
             $filter = $this->input->post('filter');
             $field  = $this->input->post('field');
@@ -72,8 +72,8 @@ class Prof extends CI_Controller
             else if (isset($filter) && empty($search))
                 $alumnes = $this->Alum_model->getAlumnesOrderBy($field);
             else
-				$alumnes = $this->Alum_model->getAllAlumnes();
-				
+                $alumnes = $this->Alum_model->getAllAlumnes();
+
             // perparing data to send with the view load
             $data['empresas'] = $this->Empresa_model->getAll();
             $data['taula'] = $alumnes;
@@ -88,8 +88,9 @@ class Prof extends CI_Controller
                     $alum = array(
                         'mail' => $this->input->post('mail'),
                         'nom' => $this->input->post('nom'),
-                        'curs_FCT' => $this->input->post('fct'),
-                        'telf' => $this->input->post('telf')
+                        'curs' => $this->input->post('cic_impar'),
+                        'telf' => $this->input->post('telf'),
+                        'anyCurs' => $this->input->post('anyCurs')
                     );
                     $this->newAlu($alum);
                     redirect('Prof/printAlumnes');
@@ -99,37 +100,16 @@ class Prof extends CI_Controller
             if (isset($_POST['newCurs'])) {
                 $arrayRes = explode("/", $this->input->post('curs'));
                 $idAlu = $arrayRes[0];
-				$emp = $arrayRes[1];
-				
-				
-                $this->Empar_model->newEmpar($idAlu, $emp);
+                $emp = $arrayRes[1];
+
+                if (isset($emp) && !empty($emp))
+                    $this->Empar_model->newEmpar($idAlu, $emp);
+
                 redirect('Prof/printAlumnes');
-			}
-			
+            }
+
             $this->load->view('prof_dashboard', $data);
         }
-    }
-    private function formAlu()
-    {
-        $this->load->library('form_validation');
-
-        $formAlu = form_open('Prof/printAlumnes');
-        $formAlu .= form_label('Email', 'mail');
-        $formAlu .= form_input(['name' => 'mail']);
-        $formAlu .= form_label('Nom', 'name');
-        $formAlu .= form_input(['name' => 'nom']);
-        $formAlu .= form_label('Telefon', 'telf');
-        $formAlu .= form_input(['name' => 'telf']);
-        $formAlu .= form_label('Curs FCT', 'cic_impar');
-        $formAlu .= form_input(['name' => 'fct']);
-        $formAlu .= form_submit('btnSubmit', 'Crear alumne');
-        $formAlu .= form_close();
-
-        $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
-        $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
-
-        return $formAlu;
     }
     public function newAlu($alum)
     {
@@ -150,14 +130,44 @@ class Prof extends CI_Controller
             $idalum = $this->User_model->getIdUser($alum['mail']);
 
             $newAlu = array(
+                'anyCurs' => $alum['anyCurs'],
                 'idAlumne' => $idalum,
-                'curs_FCT' => $alum['curs_FCT'],
-                'telefon' => $alum['telf']
+                'curs' => $alum['curs'],
+                'telefon' => $alum['telf'],
+
             );
 
             $this->Alum_model->newAlum($newAlu);
         }
     }
+    private function formAlu()
+    {
+        $this->load->library('form_validation');
+
+        $formAlu = form_open('Prof/printAlumnes');
+        $formAlu .= form_label('Email', 'mail');
+        $formAlu .= form_input(['name' => 'mail']);
+        $formAlu .= form_label('Nom', 'name');
+        $formAlu .= form_input(['name' => 'nom']);
+        $formAlu .= form_label('Telefon', 'telf');
+        $formAlu .= form_input(['name' => 'telf']);
+        $formAlu .= "<br>";
+        $formAlu .= form_label('Curs', 'cic_impar');
+        $formAlu .= form_input(['name' => 'cic_impar']);
+        $formAlu .= form_label('Any Curs', 'anyCurs');
+        $formAlu .= form_input(['name' => 'anyCurs']);
+        $formAlu .= form_submit('btnSubmit', 'Crear alumne');
+        $formAlu .= form_close();
+
+        $this->form_validation->set_rules('mail', 'Email', 'required|trim|xss_clean|is_unique[users.mail]');
+        $this->form_validation->set_rules('nom', 'Nom', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('telf', 'Telefon', 'required|trim|xss_clean|is_unique[alumnes.telefon]');
+        $this->form_validation->set_rules('cic_impar', 'Curs', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('anyCurs', 'Any Curs', 'required|trim|xss_clean');
+
+        return $formAlu;
+    }
+
 
     public function delAlu($idAlu)
     {
@@ -215,12 +225,14 @@ class Prof extends CI_Controller
             $insert_csv['nom'] = $csv_line[1];
             $insert_csv['telf'] = $csv_line[2];
             $insert_csv['curs_FCT'] = $csv_line[3];
+            $insert_csv['anyCurs'] = $csv_line[4];
 
             $alumnos[$i] = array(
                 'mail' => $insert_csv['mail'],
                 'nom' => $insert_csv['nom'],
                 'telf' => $insert_csv['telf'],
-                'curs_FCT' => $insert_csv['curs_FCT']
+                'curs_FCT' => $insert_csv['curs_FCT'],
+                'anyCurs' => $insert_csv['anyCurs']
             );
             $i++;
         }

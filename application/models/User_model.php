@@ -16,5 +16,10 @@ class User_model extends CI_Model
         {
                 return $row['userid'];
         }
+	}
+	public function updUser($user,$idUser)
+    {
+		$this->db->where('userId',$idUser );
+        $this->db->update('users', $user);
     }
 }

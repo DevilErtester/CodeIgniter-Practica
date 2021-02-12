@@ -175,11 +175,40 @@ class Prof extends CI_Controller
         $this->Alum_model->delAlu($idAlu);
         redirect('/Prof/printAlumnes');
     }
+	
 
     public function editAlu($idAlu)
     {
+		$this->load->model('Alum_model');
+		$this->load->model('User_model');
+		$alumne=$this->Alum_model->getAlu($idAlu);
+		$data['alumne'] = $alumne;
+		
+		if (isset($_POST['modAlu'])) {
+			$alum = array(
+				'mail' => $this->input->post('mail'),
+				'nom' => $this->input->post('nom'),
+				'curs' => $this->input->post('cic_impar'),
+				'telf' => $this->input->post('telf'),
+				'anyCurs' => $this->input->post('anyCurs')
+			);
+			$user = array(
+                'mail' => $alum['mail'],
+                'nom' => $alum['nom'],
+            );
 
-        redirect('/Prof/printAlumnes');
+            $newAlu = array(
+                'anyCurs' => $alum['anyCurs'],
+                'curs' => $alum['curs'],
+                'telefon' => $alum['telf']
+			);
+			$this->User_model->updUser($user,$idAlu);
+			$this->Alum_model->updAlum($newAlu,$idAlu);
+			redirect('Prof/printAlumnes');
+		}
+		$this->load->view('prof_editAlu',$data);
+		
+        
     }
     // ===========================================================================================================
     // ======================GRUP ALUMNES=========================================================================

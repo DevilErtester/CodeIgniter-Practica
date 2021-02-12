@@ -34,5 +34,17 @@ class Alum_model extends CI_Model
     {
         $this->db->delete('alumnes', array('idAlumne' => $idAlu));
         $this->db->delete('users', array('userid' => $idAlu));
-    }
+	}
+	public function getAlu($idAlu)
+	{
+		$query = $this->db->select('users.nom,users.mail,alumnes.*');
+		$query = $this->db->join('users', 'users.userId = alumnes.idAlumne');
+		$query = $this->db->like('idAlumne',$idAlu)->get('alumnes');
+        return $query->result_array();
+	}
+	public function updAlum($alum,$idAlu)
+	{
+		$this->db->where('idAlumne',$idAlu );
+		$this->db->update('alumnes', $alum);
+	}
 }

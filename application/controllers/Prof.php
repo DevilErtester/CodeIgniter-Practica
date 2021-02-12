@@ -96,7 +96,7 @@ class Prof extends CI_Controller
                     redirect('Prof/printAlumnes');
                 }
             }
-            // Dropdown button for adding cursos
+            // Dropdown button for pairing alumnes with empresas
             if (isset($_POST['newCurs'])) {
                 $arrayRes = explode("/", $this->input->post('curs'));
                 $idAlu = $arrayRes[0];

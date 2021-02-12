@@ -41,9 +41,9 @@
 					</tr>";
 			
 			echo '</table >';
-			echo validation_errors();
+			
         ?>
-		<form action="http://127.0.0.1/codeIgniter/index.php/Prof/editAlu/<?php echo $alumne[0]['idAlumne'];?>" method="post" accept-charset="utf-8">
+		<form action="<?php echo base_url() . "index.php/Prof/editAlu/". $alumne[0]['idAlumne']; ?>" method="post" accept-charset="utf-8">
 			<label for="mail">Email</label><input type="text" name="mail" value="<?php echo $alumne[0]['mail'];?>">
 			<label for="name">Nom</label><input type="text" name="nom" value="<?php echo $alumne[0]['nom'];?>">
 			<label for="telf">Telefon</label><input type="text" name="telf" value="<?php echo $alumne[0]['telefon'];?>">

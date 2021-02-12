@@ -171,44 +171,52 @@ class Prof extends CI_Controller
 
     public function delAlu($idAlu)
     {
-        $this->load->model('Alum_model');
-        $this->Alum_model->delAlu($idAlu);
-        redirect('/Prof/printAlumnes');
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $this->load->model('Alum_model');
+            $this->Alum_model->delAlu($idAlu);
+            redirect('/Prof/printAlumnes');
+        }
     }
-	
-	// ===========================================================================================================
+
+    // ===========================================================================================================
     // =================EDIT ALUMNES==============================================================================
     // ===========================================================================================================
     public function editAlu($idAlu)
     {
-		$this->load->model('Alum_model');
-		$this->load->model('User_model');
-		$alumne=$this->Alum_model->getAlu($idAlu);
-		$data['alumne'] = $alumne;
-		
-		if (isset($_POST['modAlu'])) {
-			$alum = array(
-				'mail' => $this->input->post('mail'),
-				'nom' => $this->input->post('nom'),
-				'curs' => $this->input->post('cic_impar'),
-				'telf' => $this->input->post('telf'),
-				'anyCurs' => $this->input->post('anyCurs')
-			);
-			$user = array(
-                'mail' => $alum['mail'],
-                'nom' => $alum['nom'],
-            );
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $this->load->model('Alum_model');
+            $this->load->model('User_model');
+            $alumne = $this->Alum_model->getAlu($idAlu);
+            $data['alumne'] = $alumne;
 
-            $newAlu = array(
-                'anyCurs' => $alum['anyCurs'],
-                'curs' => $alum['curs'],
-                'telefon' => $alum['telf']
-			);
-			$this->User_model->updUser($user,$idAlu);
-			$this->Alum_model->updAlum($newAlu,$idAlu);
-			redirect('Prof/printAlumnes');
-		}
-		$this->load->view('prof_editAlu',$data);
+            if (isset($_POST['modAlu'])) {
+                $alum = array(
+                    'mail' => $this->input->post('mail'),
+                    'nom' => $this->input->post('nom'),
+                    'curs' => $this->input->post('cic_impar'),
+                    'telf' => $this->input->post('telf'),
+                    'anyCurs' => $this->input->post('anyCurs')
+                );
+                $user = array(
+                    'mail' => $alum['mail'],
+                    'nom' => $alum['nom'],
+                );
+
+                $newAlu = array(
+                    'anyCurs' => $alum['anyCurs'],
+                    'curs' => $alum['curs'],
+                    'telefon' => $alum['telf']
+                );
+                $this->User_model->updUser($user, $idAlu);
+                $this->Alum_model->updAlum($newAlu, $idAlu);
+                redirect('Prof/printAlumnes');
+            }
+            $this->load->view('prof_editAlu', $data);
+        }
     }
     // ===========================================================================================================
     // ======================GRUP ALUMNES=========================================================================
@@ -324,13 +332,21 @@ class Prof extends CI_Controller
     }
     public function deleteEmp($idEmp)
     {
-        $this->load->model('Empresa_model');
-        $this->Empresa_model->delEmp($idEmp);
-        redirect('/Prof/Empresas');
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            $this->load->model('Empresa_model');
+            $this->Empresa_model->delEmp($idEmp);
+            redirect('/Prof/Empresas');
+        }
     }
     public function editEmp($idEmp)
     {
-        //In need to learn how to do modifications
-        redirect('/Prof/Empresas');
+        if (!$this->is_logged()) {
+            $this->invalid();
+        } else {
+            //In need to learn how to do modifications
+            redirect('/Prof/Empresas');
+        }
     }
 }

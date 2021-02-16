@@ -52,11 +52,12 @@ class Admin extends CI_Controller
 
     public function printAlumnes()
     {
+
         if (!$this->is_logged()) {
             $this->invalid();
         } else {
             $this->load->model('admin_model');
-
+			$this->load->model('User_model');
             // load table library
             $this->load->library('table');
             // set table template
@@ -66,7 +67,8 @@ class Admin extends CI_Controller
             $this->table->set_heading('idAlumne', 'Telefon', 'FCT', 'Any', 'TutorId', 'Cicle Impartit');
 
             $alumnes = $this->admin_model->getAllAlumnes();
-
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			$data['userData']=$user;
             $data['taula'] = $this->table->generate($alumnes);
             $data['form'] = null;
             $data['func'] = "index.php/Admin/printTutores";
@@ -103,7 +105,11 @@ class Admin extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Tutors_model');
+			$this->load->model('User_model');
             $this->load->library('form_validation');
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			$data['userData']=$user;
+
 
             $this->form_validation->set_rules('mail', 'email', 'required|trim|xss_clean|is_unique[users.mail]');
             $this->form_validation->set_rules('nom', 'nom', 'required|trim|xss_clean');

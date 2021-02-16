@@ -61,6 +61,7 @@ class Prof extends CI_Controller
             $this->load->model('Tutors_model');
             $this->load->model('Empresa_model');
             $this->load->model('Empar_model');
+			$this->load->model('User_model');
             // Getting the filter inputs
             $filter = $this->input->post('filter');
             $field  = $this->input->post('field');
@@ -75,6 +76,8 @@ class Prof extends CI_Controller
                 $alumnes = $this->Alum_model->getAllAlumnes();
 
             // perparing data to send with the view load
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			$data['userData']=$user;
             $data['empresas'] = $this->Empresa_model->getAll();
             $data['taula'] = $alumnes;
             $data['form'] = $this->formAlu();
@@ -190,6 +193,8 @@ class Prof extends CI_Controller
         } else {
             $this->load->model('Alum_model');
             $this->load->model('User_model');
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			$data['userData']=$user;
             $alumne = $this->Alum_model->getAlu($idAlu);
             $data['alumne'] = $alumne;
 
@@ -227,7 +232,9 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Alum_model');
-
+			$this->load->model('User_model');
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			$data['userData']=$user;
 
             $alumnes = $this->Alum_model->getAllAlumnes();
 
@@ -287,9 +294,12 @@ class Prof extends CI_Controller
             $this->invalid();
         } else {
             $this->load->model('Empresa_model');
-
+			$this->load->model('User_model');
+			$user=$this->User_model->getUserByid($this->session->userdata()['userId']);
+			
             $empresas = $this->Empresa_model->getAll();
-
+			
+			$data['userData']=$user;
             $data['taula'] = $empresas;
             $data['form'] = $this->formEmp();
             $data['func'] = "index.php/Prof/printAlumnes";

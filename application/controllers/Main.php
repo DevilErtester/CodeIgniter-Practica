@@ -28,7 +28,7 @@ class Main extends CI_Controller
     {
         if ($this->session->userdata('currently_logged_in')) {
             if ($this->session->userdata('rol') == 1) {
-                $this->load->view('users');
+				redirect('User/dashboard_controller');
             } else if ($this->session->userdata('rol') == 2) {
                 redirect('Prof/dashboard_controller');
             } else if ($this->session->userdata('rol') == 0) {
@@ -53,12 +53,13 @@ class Main extends CI_Controller
         $this->form_validation->set_rules('password', 'Password:', 'required|trim');
 
         if ($this->form_validation->run()) {
-
+			$id=$this->login_model->log_in_correctly();
             $data = array(
-
+				
                 'username' => $this->input->post('username'),
                 'rol' => $this->input->post('rol'),
-                'currently_logged_in' => 1
+                'currently_logged_in' => 1,
+				'userId'=> $id
             );
             $this->session->set_userdata($data);
             redirect('Main/data');
@@ -82,7 +83,6 @@ class Main extends CI_Controller
         if ($this->form_validation->run()) {
             echo "Welcome, you are logged in.";
         } else {
-
             $this->load->view('signin');
         }
     }
@@ -93,6 +93,7 @@ class Main extends CI_Controller
         $this->load->model('login_model');
 
         if ($this->login_model->log_in_correctly()) {
+			
             return true;
         } else {
             $this->form_validation->set_message('validation', 'Incorrect username/password.');

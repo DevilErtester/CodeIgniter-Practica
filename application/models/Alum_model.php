@@ -42,6 +42,11 @@ class Alum_model extends CI_Model
 		$query = $this->db->like('idAlumne',$idAlu)->get('alumnes');
         return $query->result_array();
 	}
+	public function getOnlyAlu($idAlu)
+	{
+		$query = $this->db->like('idAlumne',$idAlu)->get('alumnes');
+        return $query->result_array();
+	}
 	public function updAlum($alum,$idAlu)
 	{
 		$this->db->where('idAlumne',$idAlu );

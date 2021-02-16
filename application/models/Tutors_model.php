@@ -19,7 +19,7 @@ class Tutors_model extends CI_Model
         $query = $this->db->get('tutores');
         return $query->result_array();
     }
-	public function getOnlyAlu($idTutor)
+	public function getOnlyTutor($idTutor)
 	{
 		$query = $this->db->like('idTutor',$idTutor)->get('tutores');
         return $query->result_array();

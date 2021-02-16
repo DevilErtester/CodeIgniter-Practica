@@ -52,7 +52,9 @@ class User extends CI_Controller
 			if($user[0]['rol']==1){
 				$data['detail']=$this->Alum_model->getOnlyAlu($this->session->userdata()['userId']);
 			} else if ($user[0]['rol']==2){
-				$data['detail']=$this->Tutors_model->getOnlyAlu($this->session->userdata()['userId']);
+				$data['detail']=$this->Tutors_model->getOnlyTutor($this->session->userdata()['userId']);
+			}else if ($user[0]['rol']==0){
+				$data['detail']=null;
 			}
             $this->load->view('users',$data);
         } else {

@@ -42,7 +42,14 @@
 
     <div class='container'>
         <?php
-        var_dump($userData);
+        var_dump($this->session->userdata());
+        echo "Userdata <br><br>";
+        foreach ($userData as $user) {
+            echo $user['userId'];
+            echo "<br>";
+        }
+
+        echo "<br>Userdata <br>";
         echo "<br>";
         echo "<br>";
         var_dump($detail);
